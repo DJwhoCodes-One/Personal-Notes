@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="w-full min-h-screen bg-zinc-900 text-white p-10 flex justify-between">
+        <div class="leftContainer w-half">
+            <h3 class="text-3xl mb-5">Welcome, <%= userProfile.name%>
+            </h3>
+            <h5 class="mb-3">Create your new post.</h5>
+            <form action="/post" method="post">
+                <textarea placeholder="What's on your mind!" name="content"
+                    class="w-96 p-3 outline-none resize-none bg-transparent border-2 border-zinc-800 rounded-mds"></textarea>
+                <input type="submit" value="Create New Post" class="px-3 py-2 bg-blue-500 rounded-md mt-3 w-40 block">
+            </form>
+            <div class="mt-20">
+                <h3 class="text-2xl">Your Notes</h3>
+                <%userProfile.posts.reverse().forEach((post)=> { %>
+                    <div class="postcontainer mt-5">
+                        <div class="post w-96 rounded-md border-2 border-zinc-600 bg-zinc-800 p-4 mt-2">
+                            <h4 class="mb-2 text-sm text-blue-500">@<%= userProfile.username%>
+                            </h4>
+                            <p>
+                                <%= post.content%>
+                            </p>
+                            <div class="btns mt-3">
+                                <a href="" class="text-pink-500 text-sm">Like</a>
+                                <a href="" class="text-gray-400 text-sm ml-3">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% })%>
+            </div>
+        </div>
+        <div class="rightContainer">
+            <a href="/logout" class="bg-red-500 rounded-md px-3 py-2">Logout</a>
+        </div>
+    </div>
+</body>
+
+</html>

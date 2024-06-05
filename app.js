@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt');
@@ -64,8 +65,23 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 })
 
-app.get('/profile', isLoggedIn, (req, res) => {
-    res.send(req.user);
+app.get('/profile', isLoggedIn, async (req, res) => {
+    const userProfile = await userModel.findOne({ email: req.user.email }).populate("posts");
+    // userProfile = await userProfile.;
+    res.render('profile', { userProfile });
+})
+
+app.post('/post', isLoggedIn, async (req, res) => {
+    const userProfile = await userModel.findOne({ email: req.user.email });
+    // console.log(userProfile);
+    const post = await postModel.create({
+        user: userProfile._id,
+        content: req.body.content,
+    })
+
+    userProfile.posts.push(post._id);
+    await userProfile.save();
+    res.redirect('/profile');
 })
 
 function isLoggedIn(req, res, next) {
